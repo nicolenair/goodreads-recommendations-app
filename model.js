@@ -55,8 +55,10 @@ Samples.remove = function (date, result) {
 Samples.select = function (coordinates, result) {
   sql.query(
     // "select min(sqrt((rr-?[0])*(rr-?[0])+(gg-?[0])*(gg-?[1])+(bb-?[2])*(bb-?[2]))) from samples;",
-    "select userId from samples where (?-book_vector1) in (select min(?-book_vector1) from samples);",
-    [coordinates, coordinates],
+    // "select userId from samples where (?-book_vector1) in (select min(abs(?-book_vector1)) from samples);",
+    "select userId, abs(?-book_vector1) from samples;",
+    [coordinates],
+    // [coordinates, coordinates],
     function (err, res) {
       if (err) {
         console.log("error: ", err);

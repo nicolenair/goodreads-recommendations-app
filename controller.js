@@ -66,37 +66,38 @@ exports.delete_a_samples = function (req, res) {
 
 exports.select_samples = function (coordinates, req, res) {
   Samples.select(coordinates, function (err, samples) {
-    console.log("controller");
-    console.log(samples[0].userId);
-    bookList = [];
-    // if (err) res.send(err);
-    // console.log("res", samples);
-    var request = new XMLHttpRequest(); //date recent
-    request.open(
-      "GET",
-      "https://www.goodreads.com/review/list/" +
-        samples[0].userId +
-        ".xml?key=" +
-        process.env.GOODREADS_KEY +
-        "&v=2&shelf=read&per_page=20&page=" +
-        1,
-      false
-    );
-    request.send();
-    console.log(1);
-    var xml = request.responseText;
-    xml_parsed = new DOMParser().parseFromString(xml, "text/xml");
-    if (xml_parsed.getElementsByTagName("reviews").length > 0) {
-      var books = xml_parsed.getElementsByTagName("book");
-      for (var i = 0; i < books.length; i++) {
-        var book = books[i];
-        var names = book.getElementsByTagName("title");
+    // console.log("controller");
+    // console.log(samples);
+    // bookList = [];
+    // // if (err) res.send(err);
+    // // console.log("res", samples);
+    // var request = new XMLHttpRequest(); //date recent
+    // request.open(
+    //   "GET",
+    //   "https://www.goodreads.com/review/list/" +
+    //     samples[0].userId +
+    //     ".xml?key=" +
+    //     process.env.GOODREADS_KEY +
+    //     "&v=2&shelf=read&per_page=20&page=" +
+    //     1,
+    //   false
+    // );
+    // request.send();
+    // console.log(1);
+    // var xml = request.responseText;
+    // xml_parsed = new DOMParser().parseFromString(xml, "text/xml");
+    // if (xml_parsed.getElementsByTagName("reviews").length > 0) {
+    //   var books = xml_parsed.getElementsByTagName("book");
+    //   for (var i = 0; i < books.length; i++) {
+    //     var book = books[i];
+    //     var names = book.getElementsByTagName("title");
 
-        for (var j = 0; j < names.length; j++) {
-          bookList.push(names[j].childNodes[0].nodeValue);
-        }
-      }
-    }
-    res.send(bookList);
+    //     for (var j = 0; j < names.length; j++) {
+    //       bookList.push(names[j].childNodes[0].nodeValue);
+    //     }
+    //   }
+    // }
+    // res.send(bookList);
+    res.send(samples);
   });
 };

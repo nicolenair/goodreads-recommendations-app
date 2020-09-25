@@ -4,6 +4,7 @@ const myCredentials = {
   key: process.env.GOODREADS_KEY,
   secret: process.env.GOODREADS_SECRET,
 };
+var fs = require("fs");
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var DOMParser = require("domparser").DOMParser;
 var sampleDatabase = require("./controller.js");
@@ -65,29 +66,17 @@ router.get("/compute-recommendation", function (req, res) {
   pythonProcess.on("close", (code) => {
     // send data to browser
     // sampleDatabase.create_a_sample(dataToSend);
-    sampleDatabase.select_samples(dataToSend[0], req, res);
+    console.log(JSON.parse(dataToSend)[0][0]);
+    sampleDatabase.select_samples(JSON.parse(dataToSend)[0][0], req, res);
     // res.send(user_out);
   });
 });
 
 router.get("/daily-update", function (req, res) {
   var dict = {};
-  arr = [
-    "90668048",
-    "2515808",
-    "39905344",
-    "108081413",
-    "103381344",
-    "6193300",
-    "59536397",
-    "58562150",
-    "59536397",
-    "63528005",
-    "81660625",
-    "102871069",
-    "76059151",
-    "76843610",
-  ];
+  var text = fs.readFileSync("./users.txt", "utf-8");
+  var arr = text.split("\n");
+
   arr.forEach(function (userId) {
     console.log(userId);
     // fall = false;
