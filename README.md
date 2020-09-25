@@ -3,6 +3,8 @@ A web app to provide personalized book recommendations. Recommendations are coll
 
 # How to Use
 
+I am using a Node.js backend and a MySQL backend — so you will need to install both. I handle interfacing between the two in the code provided. But you need them installed before the interfacing will work. To get node, see https://www.npmjs.com/get-npm. To get mysql, see https://dev.mysql.com/doc/mysql-osx-excerpt/5.7/en/osx-installation.html. 
+
 You need to create a file called "users.txt" containing a list of Goodreads userIDs that will function as your "dataset" Example:
 ~~~
 8979787
