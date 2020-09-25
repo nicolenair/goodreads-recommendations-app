@@ -7,15 +7,16 @@ import pickle
 
 
 ls = json.loads(sys.argv[1])
-# ls = {"090909":["jfmkj", "jfnekjf", "djnkfdj", "nkdjfv", "infkjdsf", "nfjksns", "nfiernf", "dnewsk", "jjjj", "aaaaa"]}
+# ls = {"090909":["The Vegetarian", "jfnekjf", "djnkfdj", "nkdjfv", "infkjdsf", "nfjksns", "nfiernf", "dnewsk", "jjjj", "aaaaa"]}
 
 
 book_indices = []
 with open("indices.txt", "r") as f:
     for r in f.readlines():
-        book_indices.append(r)
+        book_indices.append(r[:-1])
 
 curr_row = []
+# print(book_indices)
 
 for i in book_indices:
     if i in list(ls.values())[0]:
@@ -26,6 +27,7 @@ filename = 'finalized_model.sav'
 f2 = open(filename, 'rb')
 loaded_model = pickle.load(f2)
 out = loaded_model.transform([curr_row])
+# print(curr_row)
 
 # print(sys.argv[1])
 print(out)
