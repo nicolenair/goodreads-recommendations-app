@@ -9,7 +9,7 @@ You need to create a file called "users.txt" containing a list of Goodreads user
 879879
 77779
 ~~~
-You can also use the API to crawl the userIDs of your friends, and then friends of friends and beyond, as a nice way to collect your data. 
+The only constraint on the number of user IDs that you use as data is that it needs to be more than the number of principal components that you use during PCA below. 
 
 Then, 
 ~~~
