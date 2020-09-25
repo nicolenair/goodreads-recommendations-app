@@ -116,7 +116,7 @@ router.get("/daily-update", function (req, res) {
   console.log("begin python");
 
   const { spawn } = require("child_process");
-  const pythonProcess = spawn("python", ["./knn.py", JSON.stringify(dict)]);
+  const pythonProcess = spawn("python", ["./pca.py", JSON.stringify(dict)]);
   console.log("complete");
   pythonProcess.stdout.on("data", function (data) {
     console.log("data sent");
