@@ -1,7 +1,16 @@
 # goodreads-recommendations-app
-A web app to provide personalized book recommendations. Recommendations are collaborative. It is a work in progress. 
+A web app to provide personalized book recommendations. Recommendations are collaborative. It is a work in progress, but you can play with the backend to get recommendations for yourself. 
 
 # How to Use
+
+You need to create a file called "users.txt" containing a list of Goodreads userIDs that will function as your "dataset" Example:
+~~~
+8979787
+879879
+77779
+~~~
+
+Then, 
 ~~~
 git clone https://github.com/nicolenair/goodreads-recommendations-app
 python -m venv goodreads-pyenv
