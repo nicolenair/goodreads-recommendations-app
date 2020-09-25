@@ -4,7 +4,16 @@ var sql = require("./db_config.js");
 //Task object constructor
 var Samples = function (samples) {
   this.userId = samples.userId;
-  this.book_vector = samples.book_vector;
+  this.book_vector1 = samples.book_vector1;
+  this.bookvector2 = samples.bookvector2;
+  this.bookvector3 = samples.bookvector3;
+  this.bookvector4 = samples.bookvector4;
+  this.bookvector5 = samples.bookvector5;
+  this.bookvector6 = samples.bookvector6;
+  this.bookvector7 = samples.bookvector7;
+  this.bookvector8 = samples.bookvector8;
+  this.bookvector9 = samples.bookvector9;
+  this.bookvector10 = samples.bookvector10;
   this.date = samples.date;
 };
 Samples.createSample = function (newSample, result) {
@@ -41,6 +50,22 @@ Samples.remove = function (date, result) {
       result(null, res);
     }
   });
+};
+
+Samples.select = function (coordinates, result) {
+  sql.query(
+    // "select min(sqrt((rr-?[0])*(rr-?[0])+(gg-?[0])*(gg-?[1])+(bb-?[2])*(bb-?[2]))) from samples;",
+    "select userId from samples where (?-book_vector1) in (select min(?-book_vector1) from samples);",
+    [coordinates, coordinates],
+    function (err, res) {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+      } else {
+        result(null, res);
+      }
+    }
+  );
 };
 
 module.exports = Samples;

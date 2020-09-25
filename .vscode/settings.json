@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/Users/nicarinanan/goodreads-node/goodreads-pyenv/bin/python3"
+    "python.pythonPath": "/Users/nicarinanan/goodreads-node/goodreads-pyenv/bin/python3",
+    "python.formatting.provider": "autopep8"
 }
