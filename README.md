@@ -1,5 +1,5 @@
 # goodreads-recommendations-app
-A web app to provide personalized book recommendations. Recommendations are collaborative. It is a work in progress, but you can play with the backend to get recommendations for yourself. 
+A web app to provide personalized book recommendations. Recommendations are collaborative. It is a work in progress, but you can play with the backend to get recommendations for yourself. But you can play with the backend to get recommendations for yourself, if you have a userID.
 
 # How to Use
 
@@ -9,6 +9,7 @@ You need to create a file called "users.txt" containing a list of Goodreads user
 879879
 77779
 ~~~
+You can also use the API to crawl the userIDs of your friends, and then friends of friends and beyond, as a nice way to collect your data. 
 
 Then, 
 ~~~
