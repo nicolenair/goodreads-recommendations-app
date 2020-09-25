@@ -17,9 +17,9 @@ Go to localhost:3000 just to check that the app is running. Currently, the app s
 - only for development, will not be available to clients in final version of the app. updates will be automated. 
 
 */compute-recommendations?loggedUserId=USER_ID*
-- based on the pca model you ran in daily-update, you can compute which user from your dataset is most similar to the queried user. Then, you can get book recommendations for the queried user from the user in the dataset.
-- in the future, this should be expanded to multiple users in the dataset
-- currently the similarity metric between users is only using one principal component — will probably use about 10 principal components in the final app, depending on the number that works best in during testing
+- based on the pca model you ran in daily-update, you can compute which user from your dataset is most similar to the queried user. Then, you can get book recommendations for the queried user from the most similar user in the dataset. in the future, the output book recommendations will be sampled from the top n similar users (based on past books read)
+- currently the similarity metric between users is only using one principal component — will probably use more in the final app.
+- immediate issue to be fixed: make sure that the queried user does not get recommended books that they have already read
 
 */show-all-samples*
 - this is just for development convenience. list all users in the database
