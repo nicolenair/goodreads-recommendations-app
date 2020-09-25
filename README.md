@@ -7,6 +7,7 @@ git clone https://github.com/nicolenair/goodreads-recommendations-app
 python -m venv goodreads-pyenv
 source goodreads-pyenv/bin/activate
 pip install -r requirements.txt
+npm install
 node app.js
 ~~~
 
