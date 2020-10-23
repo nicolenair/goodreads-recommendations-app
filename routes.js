@@ -8,7 +8,7 @@ var fs = require("fs");
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var DOMParser = require("domparser").DOMParser;
 var sampleDatabase = require("./controller.js");
-
+const util = require("util");
 const gr = goodreads(myCredentials);
 var express = require("express"),
   router = express.Router();
@@ -33,43 +33,84 @@ router.get("/compute-recommendation", function (req, res) {
       ".xml?key=" +
       process.env.GOODREADS_KEY +
       "&v=2&shelf=read&per_page=20&page=" +
-      i,
-    false
+      1,
+    true
   );
-  request.send();
-  console.log(1);
-  var xml = request.responseText;
-  xml_parsed = new DOMParser().parseFromString(xml, "text/xml");
-  if (xml_parsed.getElementsByTagName("reviews").length > 0) {
-    var books = xml_parsed.getElementsByTagName("book");
-    for (var i = 0; i < books.length; i++) {
-      var book = books[i];
-      var names = book.getElementsByTagName("title");
+  request.onload = function (e) {
+    if (request.readyState === 4) {
+      if (request.status === 200) {
+        // console.log(request.responseText);
+        var xml = request.responseText;
+        xml_parsed = new DOMParser().parseFromString(xml, "text/xml");
+        // , (err, rev) => {
+        //   console.log("in");
+        //   if (err) {
+        //     console.log(err);
+        //   }
+        // console.log("rev", rev);
 
-      for (var j = 0; j < names.length; j++) {
-        bookList.push(names[j].childNodes[0].nodeValue);
+        function computation(xml_parsed, callback1, callback2) {
+          callback2(xml_parsed, callback1);
+        }
+
+        function getBooks(xml_parsed, callback) {
+          rev = xml_parsed.getElementsByTagName("reviews");
+          if (rev.length > 0) {
+            console.log("working");
+            var books = xml_parsed.getElementsByTagName("book");
+            for (var i = 0; i < books.length; i++) {
+              var book = books[i];
+              var names = book.getElementsByTagName("title");
+
+              for (var j = 0; j < names.length; j++) {
+                bookList.push(names[j].childNodes[0].nodeValue);
+              }
+            }
+          } else {
+            console.log("problem");
+          }
+          callback(bookList);
+        }
+        function callGetBooks(bookList) {
+          const { spawn } = require("child_process");
+          var o = {};
+          o[userId] = bookList;
+          console.log(o);
+          const pythonProcess = spawn("python", [
+            "./inference.py",
+            JSON.stringify(o),
+          ]);
+          console.log("complete");
+          pythonProcess.stdout.on("data", function (data) {
+            console.log("data sent");
+            console.log(data);
+            dataToSend = data;
+          });
+
+          pythonProcess.on("close", (code) => {
+            // send data to browser
+            // sampleDatabase.create_a_sample(dataToSend);
+            console.log(JSON.parse(dataToSend)[0][0]);
+            sampleDatabase.select_samples(
+              JSON.parse(dataToSend)[0][0],
+              req,
+              res
+            );
+            // res.send(user_out);
+          });
+          // });
+        }
+        computation(xml_parsed, callGetBooks, getBooks);
+      } else {
+        console.error(request.statusText);
       }
     }
-  }
-  const { spawn } = require("child_process");
-  var o = {};
-  o[userId] = bookList;
-  console.log(o);
-  const pythonProcess = spawn("python", ["./inference.py", JSON.stringify(o)]);
-  console.log("complete");
-  pythonProcess.stdout.on("data", function (data) {
-    console.log("data sent");
-    console.log(data);
-    dataToSend = data;
-  });
-
-  pythonProcess.on("close", (code) => {
-    // send data to browser
-    // sampleDatabase.create_a_sample(dataToSend);
-    console.log(JSON.parse(dataToSend)[0][0]);
-    sampleDatabase.select_samples(JSON.parse(dataToSend)[0][0], req, res);
-    // res.send(user_out);
-  });
+  };
+  request.onerror = function (e) {
+    console.error(request.statusText);
+  };
+  request.send();
+  console.log("request sent");
 });
 
 router.get("/daily-update", function (req, res) {
